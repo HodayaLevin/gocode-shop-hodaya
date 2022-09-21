@@ -1,14 +1,12 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 
-export default defineComponent({
-    props: ["filterOptions"],
-    methods: {
-        changeFilter(eventChange: Event) {
-            this.$emit('changeFilter123', (eventChange.target as HTMLSelectElement).value)
-        }
-    }
-})
+const props = defineProps(["filterOptions"]);
+const emit = defineEmits(['changeFilter123']);
+
+function changeFilter(eventChange: Event) {
+    emit('changeFilter123', (eventChange.target as HTMLSelectElement).value)
+}
+
 </script>
 <template>
     <nav class="product-filter">

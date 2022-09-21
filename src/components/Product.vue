@@ -1,28 +1,39 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { reactive, ref } from 'vue';
 import type IProduct from '@/types/Product';
 import type { PropType } from 'vue'
+import { useProductCart } from '@/stores/useProductCart';
 
+const productCartStore = useProductCart();
 
+const props = defineProps({
+    productItem: {
+        type: Object as PropType<IProduct>,
+        required: true
+    },
 
-export default defineComponent({
-    props: {
-        productItem: {
-            type: Object as PropType<IProduct>,
-        }
-    }
 })
+function isInCart() {
+    return productCartStore.productCart.filter(p => p.product.id == props.productItem.id).length;
+}
+
+
+
+
 </script>
 <template>
+    <button @click="productCartStore.remove(productItem)">-</button>
     <div class="product-card">
         <div class="product-image">
-            <img :src="productItem?.image" />
+            <img :src="props.productItem?.image" />
         </div>
+        <div v-if="isInCart()"> add to cart</div>
         <div class="product-info">
             <h5>{{productItem?.title}}</h5>
             <h6>{{productItem?.price}}</h6>
         </div>
     </div>
+    <button @click="productCartStore.add(productItem)">+</button>
 
 
 
